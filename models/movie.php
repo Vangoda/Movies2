@@ -12,8 +12,8 @@ class Movie
     public $runtime;
     public $imageFile;
 
-    private static $movieList=array();
-
+    //When the new Movie object is created we want to immediatelly check if the values in the form exist
+    //and if they do assign them to object properties.
     function __construct(){
         if(session_status()==PHP_SESSION_NONE){
             session_start();
@@ -23,7 +23,6 @@ class Movie
         //echo "<pre>".var_dump($_POST)."</pre>";
         //echo "object created";
         //var_dump($_SESSION);
-        
         
         $_SESSION['postData'] = $_POST;
         $_SESSION['postDataTitle'] = $_POST['title'];
@@ -37,7 +36,9 @@ class Movie
         $this->year = $_POST["year"];
         $this->runtime = $_POST["runtime"];
         $this->imageFile = $_FILES['image'];
+
         //echo "<pre>".var_dump($_SESSION["error"])."</pre>";
+        
         }else{
             foreach ($_POST as $formField=>$value) {
                 if(empty($value)){
@@ -46,12 +47,6 @@ class Movie
             }
             if(!file_exists($this->imageFile['tmp_name']) || !is_uploaded_file($this->imageFile['tmp_name'])){
                 array_push($_SESSION["error"],"Niste odabrali datoteku za upload");
-            }
-            if($_FILES['image']['error']==2){
-                array_push($_SESSION["error"],"Odabrana datoteka premašuje maksimalnu doyvoljenu veličinu od 10MB");
-            }
-            if($_FILES['image']['error']==3){
-                array_push($_SESSION["error"],"Datoteka nije u potpunosti uplouadana");
             }
         }    
     }//end of __construct()
