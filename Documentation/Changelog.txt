@@ -1,0 +1,8 @@
+.LOG
+10:42 AM 8/28/2018
+Changes to database:
+	-removed the table 'migrations' as it was unnecessary.
+	-in the table 'movies' changed the name of the column 'imgSrc' to 'imgPath'.
+
+6:07 PM 8/28/2018
+	-work on validation and saving of uploaded image

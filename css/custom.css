@@ -1,0 +1,24 @@
+/*Vertical dividers for letter selection list*/
+li.vDivider{
+    border-left: 1px solid silver;
+}
+li.vDividerRight{
+    border-right: 1px solid silver;
+}
+/*Customization for the links in selection list*/
+li.selectionList{
+    margin-right: 0px!important;
+    padding: 5px;
+    font-size: larger;
+}
+li.selectionList>a{
+    color: teal;
+}
+li.selectionList:hover{
+    color: rgb(0, 165, 165);
+    font-size: xx-large;
+}
+.form-group.form-inline.col-6{
+    color: teal;
+    font-size: larger;
+}
