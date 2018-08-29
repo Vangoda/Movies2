@@ -68,4 +68,9 @@
             </div>
         </form>
 </div>
-<?php require("include/footer.php") ?>
+<?php 
+    if (isset($_SESSION['genreCount'])) {
+        echo'<pre>'.var_dump($_SESSION['genreCount']).'<pre>';
+    }
+    require("include/footer.php") 
+?>
