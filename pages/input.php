@@ -68,14 +68,4 @@
             </div>
         </form>
 </div>
-<?php
- 
-if(isset($_SESSION['postData']) and isset($_SESSION['postDataTitle']) and isset($_SESSION['error'])){
-echo '<pre>'.var_dump($_SESSION['postData']).'</pre>';
-echo '<pre>'.var_dump($_SESSION['postDataTitle']).'</pre>';
-echo '<pre>'.var_dump($_SESSION['error']).'</pre>';
-echo '<pre>'.var_dump($_SESSION['file']).'</pre>';
-}
-
-?>
 <?php require("include/footer.php") ?>

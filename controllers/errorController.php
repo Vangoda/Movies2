@@ -40,7 +40,7 @@ class ErrorController{
         }
     }
     public static function errorHandlerSession(){
-        var_dump($_SESSION["error"]);
+        //var_dump($_SESSION["error"]);
         if(session_status()==PHP_SESSION_NONE){
             session_start();
         }
