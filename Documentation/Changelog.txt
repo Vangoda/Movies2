@@ -6,3 +6,11 @@ Changes to database:
 
 6:07 PM 8/28/2018
 	-work on validation and saving of uploaded image
+
+11:28 AM 8/29/2018
+	-changed the logic behind image validation
+	-changed __construct of Movie to only check if file exists, no other validation is performed at this stage
+	-changed saveImage() method to save images in '../images folder'
+	-changed the way random name is generated to be more readable
+	-created github repository and a new branch
+	-added definitions for form input fields

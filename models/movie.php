@@ -152,11 +152,12 @@ class Movie
             if ($extension === false) {
                 throw new RuntimeException('Datoteka mora biti slika');
             }
-            return true;
         } catch (RuntimeException $e) {
             array_push($_SESSION['error'],$e->getMessage());
+            return false;
         }
-        return false;
+        return true;
+        
     }// end of validateImage()
     
     private function validateFormData(){
@@ -173,6 +174,18 @@ class Movie
         }
     }//end of validateFormData()
 
+    private function validateTitle(){
+        return true;
+    }
+    private function validateGenre(){
+        return true;
+    }
+    private function validateYear(){
+        return true;
+    }
+    private function validateRuntime(){
+        return true;
+    }
 
     //Functions for saving form data and file.
     public function save(){
@@ -182,17 +195,22 @@ class Movie
     private function saveImage(){
             // You should name it uniquely.
             // DO NOT USE $this->imageFile['name'] WITHOUT ANY VALIDATION !!
-            // On this example, obtain safe unique name from its binary data.
-            if (!move_uploaded_file(
-                $this->imageFile['tmp_name'],
-                sprintf('../images/%s.%s',
-                    sha1_file($this->imageFile['tmp_name']),
-                    $_SESSION['fileExtension']
-                )
-            )) {
-                throw new RuntimeException('Failed to move uploaded file.');
+            // We will hash the file name to ensure it is unique. Function will
+            // return TRUE if it saves the file succesfully, otherwise throw an exception.
+            try{
+                $hashedName = sprintf('../images/%s.%s',sha1_file($this->imageFile['tmp_name']),$_SESSION['fileExtension']);
+                if (!move_uploaded_file(
+                    $this->imageFile['tmp_name'],
+                    $hashedName
+                    )
+                ) {
+                    throw new RuntimeException('Failed to move uploaded file.');
+                }
+            } catch (RuntimeException $e){
+                array_push($_SESSION['error'],$e->getMessage());
+                return false;
             }
-        
-            echo 'File is uploaded successfully.';
+            $this->imageFile['fullPath'] = $hashedName;
+            return true;
     }//end of saveImage()
 }

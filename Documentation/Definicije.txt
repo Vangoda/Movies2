@@ -1,2 +1,21 @@
 Error poruke
-	Smiju sadržavati velika i mala slova, razmak, brojeve, naše fonetske znakove, te simbole tocka. ,upitnik? ,zarez, horizotnalnu crtu- i usklicnik!. 
+	Smiju sadržavati velika i mala slova, razmak, brojeve, naše fonetske znakove, te simbole tocka. ,upitnik? ,zarez, horizotnalnu crtu- i usklicnik!.
+
+Slika
+	Maksimalna velicina 10MB
+	Tip datoteke mora biti jpg,png ili gif.
+Forma
+	Polje Naslov
+		Naslov se smije sastojati od alfanumerickih znakova, naših fonetskih znakova, tocke, usklicnika, upitnika, horizontalne crte i razmaka.
+		Naslov mora biti duljine barem jednog znaka, a maksimalno 20 znakova.
+	Polje Žanr
+		Žanrovi se povlace iz baze.
+		Vrijednost polja žanr je broj koji se mora poklapati sa žanrovima koji postoje u bazi, ne smije biti ništa drugo.
+	Polje Godina
+		Dropdown lista.
+		Vrijednost polja smije biti samo brojka izmedu 1900 i trenutne godine.
+	Polje Trajanje
+		Vrijednost mora biti brojka.
+		Trajanje je izraženo u minutama.
+		Minimalna vrijednost je 1 a maksimalna 1000.
+	
