@@ -4,7 +4,7 @@ class ErrorController{
 
     //Function that removes designated character from a string. 1sr argument should be a string from which a character should be removed.
     //array of characters to remove.
-    private static function stripText($text,$charList){
+    public static function stripText($text,$charList){
         foreach ($charList as $char) {
             $text = str_replace($char, '', $text);
         }

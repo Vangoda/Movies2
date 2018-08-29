@@ -3,6 +3,7 @@
 //It will also hold methods for validating various proeperties of a movie
 require_once("../models/connection.php");
 require_once("../controllers/translateController.php");
+require_once("../controllers/errorController.php");
 class Movie
 {
     //Declaring properties of Movie object
@@ -160,8 +161,8 @@ class Movie
         
     }// end of validateImage()
     
+    //Return true if all the data in Form is correct, false in any other case.
     private function validateFormData(){
-        //missing code
         if(
             $this->validateTitle() AND
             $this->validateGenre() AND
@@ -174,10 +175,53 @@ class Movie
         }
     }//end of validateFormData()
 
+    //Validation of the title field
     private function validateTitle(){
+        //List of accepted characters and symbols
+        $charList = array(' ',',','.','!','?','-','š','đ','č','ć','ž','Š','Đ','Č','Ć','Ž');
+        //We will need the string without special characters and symbols to do an alnum check
+        $titleStriped = ErrorController::stripText($this->title,$charList);
+        try{
+            if (strlen($this->title) < 1 OR strlen($this->title) > 20) {
+                throw new RuntimeException('Duljina naslova mora biti najmanje 1, a najvise 20 znakova');
+            }
+            if (!ctype_alnum($titleStriped)) {
+                throw new RuntimeException('Naslov ne smije sadrzavati specijalne znakove');
+            }
+        }catch(RuntimeException $e){
+            array_push($_SESSION['error'],$e->getMessage());
+            return false;
+        }
         return true;
     }
+
+    //Validation of the genre field
     private function validateGenre(){
+
+        //Open connection to database and cont how manz genres there are. Value of genre
+        //field cannot be higher than the count of genres. It also has to have a positive value
+        //and it must be an integer.
+        $connection = DB::connectDb();
+        $query = "SELECT * FROM genres";
+        $genreList = array();
+        foreach ($connection->query($query) as $row) {
+            array_push($genreList,$row);
+        }
+        $genreCount = count($genreList);
+        $_SESSION['genreCount']=$genreCount;
+
+        try{
+            if (!is_numeric($this->genreID)) {
+                throw new RuntimeException('Molim Vas da odaberete zanr iz izbornika, predali ste krivi tip varijable');
+            }
+            if ($this->genreID <= 0 OR $this->genreID > $genreCount) {
+                $_SESSION['genreCount']=$genreCount;
+                throw new RuntimeException('Žanr mora biti neki od ponuđenih, nekako ste poslali vrijednost koja ne postoji u bazi');
+            }
+        }catch(RuntimeException $e){
+            array_push($_SESSION['error'],$e->getMessage());
+            return false;
+        }
         return true;
     }
     private function validateYear(){
