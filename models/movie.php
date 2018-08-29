@@ -38,7 +38,7 @@ class Movie
         $this->imageFile = $_FILES['image'];
 
         //echo "<pre>".var_dump($_SESSION["error"])."</pre>";
-        
+
         }else{
             foreach ($_POST as $formField=>$value) {
                 if(empty($value)){
@@ -60,15 +60,16 @@ class Movie
         //in my querry. 
         //var_dump($selection);
         $query = "SELECT * FROM movies WHERE title LIKE '".$selection."%'";
-        
+        $movieList = array();
+
         //Because it doesn't work  with self::$movieList=$connection->query($query);
         foreach ($connection->query($query) as $row) {
-            array_push(self::$movieList,$row);
+            array_push($movieList,$row);
         }
         
         //echo $query;
         //self::$movieList=$connection->query($query);
-        return self::$movieList;
+        return $movieList;
     }//end of fillMovieList()
 
     //Helper function for generating dropdown based on switch. 
@@ -145,7 +146,7 @@ class Movie
                 'gif' => 'image/gif',
             );
             $extension = array_search($finfo->file($this->imageFile['tmp_name']),$typeAllowed,true);
-            //Save extension to session so we can acces it later.
+            //Save extension to session so we can access it later.
             $_SESSION['fileExtension']=$extension;
 
             if ($extension === false) {
@@ -155,12 +156,23 @@ class Movie
         } catch (RuntimeException $e) {
             array_push($_SESSION['error'],$e->getMessage());
         }
+        return false;
     }// end of validateImage()
     
     private function validateFormData(){
         //missing code
-        return true;
+        if(
+            $this->validateTitle() AND
+            $this->validateGenre() AND
+            $this->validateYear() AND
+            $this->validateRuntime()
+        ){
+            return true;
+        }else {
+            return false;
+        }
     }//end of validateFormData()
+
 
     //Functions for saving form data and file.
     public function save(){
@@ -173,7 +185,7 @@ class Movie
             // On this example, obtain safe unique name from its binary data.
             if (!move_uploaded_file(
                 $this->imageFile['tmp_name'],
-                sprintf('../uploads/%s.%s',
+                sprintf('../images/%s.%s',
                     sha1_file($this->imageFile['tmp_name']),
                     $_SESSION['fileExtension']
                 )
