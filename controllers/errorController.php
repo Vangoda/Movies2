@@ -45,7 +45,7 @@ class ErrorController{
             session_start();
         }
         //echo '<pre>'.var_dump($_SESSION['requestFrom']).'</pre>';
-        if(!empty($_SESSION["error"]) AND $_SESSION['requestFrom']=='inputController'){
+        if(!empty($_SESSION["error"]) AND $_SESSION['requestFrom']=='inputController' AND $_SESSION['success'] != true){
             foreach ($_SESSION["error"] as $errorMsg) {
                 if(self::validateErrorMsg($errorMsg)){
                     include ("../pages/include/errorBox.php");
@@ -57,6 +57,8 @@ class ErrorController{
             }
             //Clear the error message variable after displaying all the messages.
             $_SESSION['error'] = array();
+        }elseif ($_SESSION['success'] == true) {
+            include ("../pages/include/successBox.php");
         }
         //echo "<pre>".var_dump($_SESSION["error"])."</pre";
     }

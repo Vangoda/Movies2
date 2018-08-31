@@ -19,6 +19,7 @@ if(empty($_SESSION['error']))
 if(session_status()==PHP_SESSION_NONE){
     session_start();
 }
+
 $_SESSION["requestFrom"]="inputController";
 
 header('Location: ../pages/input.php');

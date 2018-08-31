@@ -73,6 +73,14 @@ class Movie
         return $movieList;
     }//end of fillMovieList()
 
+    //Fetch all the movies from database
+    public static function fillMovieTable(){
+        $connection = DB::connectDb();
+        $stmt = $connection->prepare('SELECT * FROM movies');
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     //Helper function for generating dropdown based on switch. 
     public static function createDropdown($switch){
 
@@ -181,8 +189,14 @@ class Movie
         //We will not a accept a title if we already have it in base
         //If the title already exists we will display error message.
         $connection = DB::connectDb();
-        $query = "SELECT * FROM genres";
+        $stmt = $connection->prepare("SELECT * FROM movies WHERE title = :title");
+        $stmt->execute([':title' => $this->title]);
+        if($stmt->fetchAll()){
+           array_push($_SESSION['error'],'Film sa istim nazivom već postoji');
+           return false;
+        }
 
+        //Start validation
         //List of accepted characters and symbols
         $charList = array(' ',',','.','!','?','-','š','đ','č','ć','ž','Š','Đ','Č','Ć','Ž');
         //We will need the string without special characters and symbols to do an alnum check
@@ -259,7 +273,14 @@ class Movie
 
     //Functions for saving form data and file.
     public function save(){
-        $this->saveImage();
+        if(
+        $this->saveImage() AND
+        $this->saveFormData()
+        ){
+            $_SESSION['success'] = true;
+            return true;
+        }
+        return false;
     }
 
     private function saveImage(){
@@ -285,6 +306,24 @@ class Movie
     }//end of saveImage()
 
     private function saveFormData(){
-
+        try{
+            $connection = DB::connectDb();
+            $stmt = $connection->prepare('INSERT INTO movies (title,genreID,year,runtime,imgPath) VALUES (:title,:genreID,:year,:runtime,:imgPath)');
+            if(!$stmt->execute(
+                [
+                ':title'=>$this->title , 
+                ':genreID'=>$this->genreID,
+                ':year'=>$this->year ,
+                'runtime'=>$this->runtime,
+                'imgPath'=>$this->imageFile['fullPath']
+                ]
+                )){
+                    throw new RuntimeException('Insertion into database failed');
+                }
+            return true;
+        }catch(RuntimeException $e){
+            array_push($_SESSION['error'],$e->getMessage());
+            return false;
+        }
     }
 }
