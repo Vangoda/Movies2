@@ -6,7 +6,7 @@ Slika
 	Tip datoteke mora biti jpg,png ili gif.
 Forma
 	Polje Naslov
-		Naslov se smije sastojati od alfanumerickih znakova, naših fonetskih znakova, tocke, usklicnika, upitnika, horizontalne crte i razmaka.
+		Naslov se smije sastojati od alfanumerickih znakova, naših fonetskih znakova,zareza, tocke, usklicnika, upitnika, horizontalne crte i razmaka.
 		Naslov mora biti duljine barem jednog znaka, a maksimalno 20 znakova.
 	Polje Žanr
 		Žanrovi se povlace iz baze.
