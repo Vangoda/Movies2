@@ -177,6 +177,12 @@ class Movie
 
     //Validation of the title field
     private function validateTitle(){
+
+        //We will not a accept a title if we already have it in base
+        //If the title already exists we will display error message.
+        $connection = DB::connectDb();
+        $query = "SELECT * FROM genres";
+
         //List of accepted characters and symbols
         $charList = array(' ',',','.','!','?','-','š','đ','č','ć','ž','Š','Đ','Č','Ć','Ž');
         //We will need the string without special characters and symbols to do an alnum check
@@ -215,7 +221,7 @@ class Movie
                 throw new RuntimeException('Molim Vas da odaberete zanr iz izbornika, predali ste krivi tip varijable');
             }
             if ($this->genreID <= 0 OR $this->genreID > $genreCount) {
-                $_SESSION['genreCount']=$genreCount;
+                //$_SESSION['genreCount']=$genreCount;
                 throw new RuntimeException('Žanr mora biti neki od ponuđenih, nekako ste poslali vrijednost koja ne postoji u bazi');
             }
         }catch(RuntimeException $e){
@@ -224,10 +230,30 @@ class Movie
         }
         return true;
     }
+
+    //Validation of the year field
     private function validateYear(){
+        try{
+            if ($this->year < 1900 OR $this->year >= date("Y")) {
+                throw new RuntimeException('Godina mora biti broj izmedu sadasnje i 1900te');
+            }
+        }catch(RuntimeException $e){
+            array_push($_SESSION['error'],$e->getMessage());
+            return false;
+        }
         return true;
     }
+
+    //Validate the runtime field
     private function validateRuntime(){
+        try{
+            if ($this->runtime < 1 OR $this->runtime >1000) {
+                throw new RuntimeException('Trajanje filma mora biti broj ne veci od 1000 i ne manji od 1');
+            }
+        }catch(RuntimeException $e){
+            array_push($_SESSION['error'],$e->getMessage());
+            return false;
+        }
         return true;
     }
 
@@ -257,4 +283,8 @@ class Movie
             $this->imageFile['fullPath'] = $hashedName;
             return true;
     }//end of saveImage()
+
+    private function saveFormData(){
+
+    }
 }
