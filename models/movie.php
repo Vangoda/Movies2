@@ -277,9 +277,11 @@ class Movie
         $this->saveImage() AND
         $this->saveFormData()
         ){
-            $_SESSION['success'] = true;
+            session_start();
+            $_SESSION['saveStatus'] = true;
             return true;
         }
+        $_SESSION['saveStatus'] = false;
         return false;
     }
 
@@ -305,7 +307,7 @@ class Movie
             return true;
     }//end of saveImage()
 
-    private function saveFormData(){
+    private function saveFormData(){session_start();
         try{
             $connection = DB::connectDb();
             $stmt = $connection->prepare('INSERT INTO movies (title,genreID,year,runtime,imgPath) VALUES (:title,:genreID,:year,:runtime,:imgPath)');
@@ -323,6 +325,23 @@ class Movie
             return true;
         }catch(RuntimeException $e){
             array_push($_SESSION['error'],$e->getMessage());
+            return false;
+        }
+    }
+
+    public static function deleteMovie($id){
+        session_start();
+        try{
+            $connection = DB::connectDb();
+            $stmt = $connection->prepare('DELETE FROM movies WHERE id = :id');
+            if (!$stmt->execute([':id'=>$id])) {
+                throw new RuntimeException('Brisanje nije uspjelo');
+            }
+            $_SESSION['deleteStatus']=true;
+            return true;
+        }catch(RuntimeException $e){
+            array_push($_SESSION['error'],$e->getMessage());
+            $_SESSION['deleteStatus']=false;
             return false;
         }
     }
