@@ -2,6 +2,7 @@
     require("include/head.php");
     require("include/navbar.php");
     require("../controllers/errorController.php");
+    require("../controllers/listController.php");
     require_once("../models/movie.php");
 ?>
 
@@ -63,14 +64,32 @@
                 </div><!--"form-group form-inline col-6"-->
 
                 <div class="col-8 ">
-                    <input type="submit">
+                    <input type="submit" value='Pošalji' class="btn btn-outline-success btn-lg">
                 </div><!--"col-8 text-center"-->            
             </div>
         </form>
 </div>
+<div class='row col-md-12'>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Slika</th>
+                <th scope="col">Naslov filma</th>
+                <th scope="col">Godina</th>
+                <th scope="col">Trajanje</th>
+                <th scope="col">Akcija</th>
+              </tr>
+            </thead>
+            <tbody>
+                <?php ListController::drawMovieTable(); ?>
+            </tbody>
+        </table>
+</div><!-- Row ending-->
 <?php 
-    if (isset($_SESSION['genreCount'])) {
-        echo'<pre>'.var_dump($_SESSION['genreCount']).'<pre>';
-    }
+    /*if (isset($_SESSION['as'])) {
+        echo'<pre>'.var_dump($_SESSION['as']).'<pre>';
+    }else{
+        echo'<pre>'.var_dump($_SESSION['as']).'<pre>';
+    }*/
     require("include/footer.php") 
 ?>

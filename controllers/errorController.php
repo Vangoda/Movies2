@@ -57,7 +57,15 @@ class ErrorController{
             }
             //Clear the error message variable after displaying all the messages.
             $_SESSION['error'] = array();
+        }elseif (isset($_SESSION['saveStatus']) AND $_SESSION['saveStatus'] === true) {
+            $_SESSION['saveStatus'] = false;
+            $_SESSION['error'] = array();
+            include ("../pages/include/successBox.php");
+        }elseif (isset($_SESSION['deleteStatus']) AND $_SESSION['deleteStatus'] === true) {
+            include ("../pages/include/deleteSuccessBox.php");
+            $_SESSION['deleteStatus'] = false;
+            $_SESSION['error'] = array();
         }
-        //echo "<pre>".var_dump($_SESSION["error"])."</pre";
+        //echo "<pre>".var_dump($_SESSION)."</pre";
     }
 }

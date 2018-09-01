@@ -22,3 +22,12 @@ li.selectionList:hover{
     color: teal;
     font-size: larger;
 }
+.crop {
+    height: 200px;
+    width: 150px;
+    overflow: hidden;
+   }
+.crop img {
+    height: auto;
+    width: 100%;
+   }
