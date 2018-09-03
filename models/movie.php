@@ -248,7 +248,7 @@ class Movie
     //Validation of the year field
     private function validateYear(){
         try{
-            if ($this->year < 1900 OR $this->year >= date("Y")) {
+            if ($this->year < 1900 OR $this->year > date("Y")) {
                 throw new RuntimeException('Godina mora biti broj izmedu sadasnje i 1900te');
             }
         }catch(RuntimeException $e){
